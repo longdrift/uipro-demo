@@ -1,0 +1,10 @@
+.claude/
+_rm/
+.DS_Store
+Thumbs.db
+*.log
+__pycache__/
+
+# note 記事用ファイル（リポジトリには含めない）
+article-*.md
+images/

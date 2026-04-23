@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Low &amp; Hours — Composer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;450;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f6f4ee;
+    --bg-soft: #ece6dc;
+    --surface: #e3dccf;
+    --surface-hi: #d7ceBe;
+    --line: #c4b9a8;
+    --line-soft: #d8d0c3;
+    --text: #362f29;
+    --muted: #6a615a;
+    --dim: #938877;
+    --accent: #946e54;
+    --accent-soft: #c0ad90;
+    --espresso: #443832;
+    --radius: 4px;
+    --serif: 'Fraunces', 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); height: 100%; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+  }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 400; }
+
+  /* ============ Header ============ */
+  .app-header {
+    border-bottom: 1px solid var(--line-soft);
+    background: rgba(246,244,238,0.78);
+    backdrop-filter: blur(18px) saturate(115%);
+    position: sticky; top: 0; z-index: 30;
+  }
+  .header-inner {
+    max-width: 1680px; margin: 0 auto;
+    padding: 20px 26px;
+    display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  }
+  .brand {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    font-style: italic;
+  }
+  .brand .dot { color: var(--accent); font-style: normal; }
+  .brand-sub { color: var(--dim); font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; margin-left: 10px; font-weight: 400; }
+  .nav-links { display: flex; gap: 2px; margin-left: auto; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 7px 13px;
+    border-radius: var(--radius);
+    border: 1px solid transparent;
+    font-weight: 450;
+    transition: color 220ms, border-color 220ms, background 220ms;
+  }
+  .nav-links a:hover { background: var(--surface); color: var(--text); }
+  .nav-links a.active { color: var(--accent); border-color: var(--accent-soft); background: transparent; font-weight: 500; }
+
+  /* ============ Layout ============ */
+  .layout {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    min-height: 0;
+  }
+  .panel {
+    border-right: 1px solid var(--line-soft);
+    padding: 26px 22px 80px;
+    background: var(--bg-soft);
+    overflow-y: auto;
+    max-height: calc(100vh - 64px);
+    position: sticky;
+    top: 64px;
+    align-self: start;
+  }
+  .preview-wrap {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  /* ============ Panel ============ */
+  .panel h2 {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    letter-spacing: -0.01em;
+    text-transform: none;
+    color: var(--text);
+    margin: 0 0 18px;
+    font-weight: 400;
+    font-style: italic;
+  }
+  .slot { margin-bottom: 20px; }
+  .slot label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 6px;
+    font-weight: 450;
+  }
+  .slot label .slot-idx {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    font-weight: 400;
+  }
+  .slot .picker {
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 11px 13px;
+    cursor: pointer;
+    transition: border-color 240ms ease, background 240ms ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .slot .picker:hover { border-color: var(--accent-soft); background: var(--surface); }
+  .slot .picker .val {
+    font-size: 0.92rem;
+    line-height: 1.3;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 450;
+  }
+  .slot .picker .chevron { color: var(--dim); font-size: 0.75rem; }
+  .slot .sub {
+    font-size: 0.72rem;
+    color: var(--dim);
+    margin-top: 6px;
+    line-height: 1.45;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .slot .mini-swatch {
+    display: inline-flex;
+    width: 54px;
+    height: 12px;
+    border-radius: 1px;
+    overflow: hidden;
+    border: 1px solid var(--line-soft);
+    flex-shrink: 0;
+  }
+  .slot .mini-swatch span { flex: 1; }
+
+  .actions { display: flex; gap: 8px; margin-top: 8px; }
+  .btn {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    font: inherit;
+    font-size: 0.74rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 240ms ease, border-color 240ms ease, background 240ms ease;
+    flex: 1;
+    font-weight: 450;
+  }
+  .btn:hover { border-color: var(--accent-soft); color: var(--text); background: var(--surface); }
+  .btn.primary {
+    background: transparent;
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .btn.primary:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+
+  /* ============ Search Modal ============ */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(68,56,50,0.26);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 72px 20px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .search-modal {
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    border-radius: 6px;
+    max-width: 720px;
+    width: 100%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 26px 72px rgba(68,56,50,0.12);
+  }
+  .search-modal header {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+  }
+  .search-modal header h3 {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    letter-spacing: -0.005em;
+    text-transform: none;
+    margin: 0;
+    color: var(--text);
+    font-weight: 400;
+    font-style: italic;
+  }
+  .search-modal header .close {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: color 220ms, border-color 220ms;
+  }
+  .search-modal header .close:hover { color: var(--accent); border-color: var(--accent-soft); }
+  .search-modal .search-input {
+    background: var(--bg-soft);
+    border: none;
+    border-bottom: 1px solid var(--line-soft);
+    padding: 16px 22px;
+    color: var(--text);
+    font: inherit;
+    font-size: 0.95rem;
+    outline: none;
+  }
+  .search-modal .search-input::placeholder { color: var(--dim); font-style: italic; }
+  .search-modal .results {
+    overflow-y: auto;
+    flex: 1;
+  }
+  .result {
+    padding: 13px 22px;
+    border-bottom: 1px solid var(--line-soft);
+    cursor: pointer;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    transition: background 180ms;
+  }
+  .result:hover, .result.active { background: var(--surface-hi); }
+  .result .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--dim);
+    min-width: 34px;
+    font-weight: 400;
+  }
+  .result .main { flex: 1; min-width: 0; }
+  .result .main .title { font-size: 0.94rem; font-weight: 450; letter-spacing: -0.005em; }
+  .result .main .sub { font-size: 0.78rem; color: var(--muted); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .result .thumb { width: 60px; height: 36px; border-radius: 2px; border: 1px solid var(--line-soft); flex-shrink: 0; display: flex; overflow: hidden; }
+  .result .thumb span { flex: 1; }
+
+  /* ============ Preview ============ */
+  .preview-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+  }
+  .preview-toolbar .tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 5px 11px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
+    font-weight: 450;
+  }
+  .preview-toolbar .tag.accent { border-color: var(--accent-soft); color: var(--accent); }
+  .preview-toolbar .spacer { flex: 1; }
+  .vp-switch {
+    display: flex;
+    gap: 2px;
+    background: transparent;
+    padding: 3px;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+  }
+  .vp-switch button {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: var(--dim);
+    padding: 5px 12px;
+    font: inherit;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    font-weight: 450;
+    transition: color 220ms, background 220ms;
+  }
+  .vp-switch button:hover { color: var(--text); }
+  .vp-switch button.active {
+    background: transparent;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .preview-frame-wrap {
+    flex: 1;
+    min-height: 500px;
+    background: var(--bg-soft);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px;
+  }
+  .preview-frame-wrap iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 720px;
+    border: 0;
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 22px 56px rgba(68,56,50,0.08);
+    transition: width 260ms ease, max-width 260ms ease;
+  }
+  .preview-frame-wrap[data-vp="mobile"] iframe { width: 390px; }
+  .preview-frame-wrap[data-vp="tablet"] iframe { width: 820px; }
+
+  /* Recipe readout */
+  .recipe {
+    padding: 14px 18px;
+    background: transparent;
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    font-size: 0.76rem;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    line-height: 1.5;
+  }
+  .recipe strong { color: var(--text); font-weight: 500; font-family: var(--serif); font-style: italic; letter-spacing: 0.01em; font-size: 0.82rem; }
+  .recipe em { color: var(--accent); font-style: italic; }
+
+  @media (max-width: 1024px) {
+    .layout { grid-template-columns: 1fr; }
+    .panel { position: static; max-height: none; border-right: none; border-bottom: 1px solid var(--line-soft); }
+  }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-inner">
+    <div>
+      <a href="../index.html" style="text-decoration:none;color:inherit;">
+        <span class="brand">Low <span class="dot">&amp;</span> Hours</span>
+      </a>
+      <span class="brand-sub">Composer · internal design tool</span>
+    </div>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../dictionary/index.html">Dictionary</a>
+      <a href="./index.html" class="active">Composer</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="panel">
+    <h2>Recipe</h2>
+
+    <div class="slot">
+      <label>Product Type <span class="slot-idx" id="pick-products-idx">#—</span></label>
+      <div class="picker" data-section="products">
+        <span class="val" id="pick-products-val">—</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="sub" id="pick-products-sub"></div>
+    </div>
+
+    <div class="slot">
+      <label>UI Style <span class="slot-idx" id="pick-styles-idx">#—</span></label>
+      <div class="picker" data-section="styles">
+        <span class="val" id="pick-styles-val">—</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="sub" id="pick-styles-sub"></div>
+    </div>
+
+    <div class="slot">
+      <label>Color Palette <span class="slot-idx" id="pick-colors-idx">#—</span></label>
+      <div class="picker" data-section="colors">
+        <span class="val" id="pick-colors-val">—</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="sub" id="pick-colors-sub" style="display:flex; align-items:center; gap:8px;"></div>
+    </div>
+
+    <div class="slot">
+      <label>LP Pattern <span class="slot-idx" id="pick-landing-idx">#—</span></label>
+      <div class="picker" data-section="landing">
+        <span class="val" id="pick-landing-val">—</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="sub" id="pick-landing-sub"></div>
+    </div>
+
+    <div class="slot">
+      <label>Typography <span class="slot-idx" id="pick-typography-idx">#—</span></label>
+      <div class="picker" data-section="typography">
+        <span class="val" id="pick-typography-val">—</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="sub" id="pick-typography-sub"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="btn-random">Random</button>
+      <button class="btn" id="btn-copy">Copy HTML</button>
+    </div>
+    <div class="actions" style="margin-top:6px;">
+      <button class="btn primary" id="btn-render">Render</button>
+    </div>
+  </aside>
+
+  <section class="preview-wrap">
+    <div class="preview-toolbar">
+      <span class="tag" id="tag-style">—</span>
+      <span class="tag" id="tag-lp">—</span>
+      <span class="tag accent" id="tag-type">—</span>
+      <span class="spacer"></span>
+      <div class="vp-switch" id="vp-switch">
+        <button data-vp="desktop" class="active">Desktop</button>
+        <button data-vp="tablet">Tablet</button>
+        <button data-vp="mobile">Mobile</button>
+      </div>
+    </div>
+
+    <div class="preview-frame-wrap" id="frame-wrap" data-vp="desktop">
+      <iframe id="preview" title="Preview"></iframe>
+    </div>
+
+    <div class="recipe" id="recipe">
+      <strong>Recipe:</strong> pick 5 items, then <em>Render</em>.
+    </div>
+  </section>
+</div>
+
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="search-modal">
+    <header>
+      <h3 id="modal-title">Pick</h3>
+      <button class="close" id="modal-close">×</button>
+    </header>
+    <input class="search-input" id="search-input" type="text" placeholder="type to filter…" autocomplete="off" />
+    <div class="results" id="results"></div>
+  </div>
+</div>
+
+<script src="../dictionary/data.js"></script>
+<script src="./compose.js"></script>
+</body>
+</html>

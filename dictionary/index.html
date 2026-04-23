@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Low &amp; Hours — Visual Dictionary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;450;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f6f4ee;
+    --bg-soft: #ece6dc;
+    --surface: #fbf8f1;
+    --surface-hi: #f4efe4;
+    --line: #c4b9a8;
+    --line-soft: #d8d0c3;
+    --text: #362f29;
+    --muted: #6a615a;
+    --dim: #938877;
+    --accent: #946e54;
+    --accent-soft: #c0ad90;
+    --espresso: #443832;
+    --blue: #7c8aa4;
+    --pink: #a28196;
+    --green: #82978a;
+    --radius: 4px;
+    --serif: 'Fraunces', 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  code, .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.85em; font-weight: 400; }
+
+  /* ============ Header ============ */
+  .app-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: rgba(246,244,238,0.78);
+    backdrop-filter: blur(18px) saturate(115%);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .header-inner {
+    max-width: 1560px;
+    margin: 0 auto;
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .brand {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    font-style: italic;
+  }
+  .brand .dot { color: var(--accent); font-style: normal; }
+  .brand-sub {
+    color: var(--dim);
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-left: 10px;
+    font-weight: 400;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 2px;
+    margin-left: auto;
+    flex-wrap: wrap;
+  }
+  .tab {
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--muted);
+    padding: 8px 14px;
+    font: inherit;
+    font-size: 0.74rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 450;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: color 220ms ease, background 220ms ease, border-color 220ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tab:hover { color: var(--text); background: var(--surface); }
+  .tab.active {
+    color: var(--accent);
+    background: transparent;
+    border-color: var(--accent-soft);
+    font-weight: 500;
+  }
+  .tab .count {
+    font-size: 0.68rem;
+    opacity: 0.7;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  .search-wrap {
+    max-width: 1560px;
+    margin: 0 auto;
+    padding: 28px 28px 8px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .search-wrap h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 1.9rem;
+    margin: 0;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+  }
+  .search-wrap .section-desc {
+    color: var(--muted);
+    font-size: 0.88rem;
+    max-width: 56ch;
+    line-height: 1.55;
+  }
+  .search {
+    margin-left: auto;
+    position: relative;
+  }
+  .search input {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 10px 14px 10px 36px;
+    border-radius: var(--radius);
+    font: inherit;
+    font-size: 0.88rem;
+    min-width: 320px;
+    transition: border-color 220ms ease, background 220ms ease;
+  }
+  .search input:focus { outline: none; border-color: var(--accent-soft); background: var(--bg-soft); }
+  .search input::placeholder { color: var(--dim); font-style: italic; }
+  .search::before {
+    content: "⌕";
+    position: absolute;
+    left: 12px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--dim);
+    font-size: 1rem;
+  }
+
+  /* ============ Grid ============ */
+  main {
+    max-width: 1560px;
+    margin: 0 auto;
+    padding: 20px 28px 80px;
+  }
+  .grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: border-color 260ms ease, transform 260ms ease, box-shadow 260ms ease;
+  }
+  .card:hover {
+    border-color: var(--accent-soft);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 26px rgba(68,56,50,0.07);
+  }
+
+  .card-visual {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .card-body {
+    padding: 16px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    flex: 1;
+  }
+
+  .card-idx {
+    font-size: 0.68rem;
+    color: var(--dim);
+    letter-spacing: 0.14em;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+  }
+  .card-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 1.12rem;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    color: var(--text);
+  }
+  .card-sub {
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+
+  .chiprow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 10px;
+  }
+  .chip {
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    font-weight: 450;
+  }
+  .chip.accent { color: var(--accent); border-color: var(--accent-soft); background: transparent; }
+
+  /* ============ Swatches ============ */
+  .swatch-row {
+    display: flex;
+    height: 100%;
+    width: 100%;
+  }
+  .swatch { flex: 1; position: relative; }
+  .swatch::after {
+    content: attr(data-hex);
+    position: absolute;
+    bottom: 6px; left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transition: opacity 200ms;
+  }
+  .card:hover .swatch::after { opacity: 1; }
+
+  /* ============ Typography visual ============ */
+  .type-visual {
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    background: linear-gradient(145deg, #f6f4ee 0%, #ece6dc 100%);
+    gap: 6px;
+  }
+  .type-heading {
+    font-size: 2rem;
+    line-height: 1.02;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: var(--text);
+  }
+  .type-body {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .type-names {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-top: 1px solid var(--line-soft);
+    padding-top: 8px;
+    margin-top: 4px;
+    font-weight: 400;
+  }
+
+  /* ============ Style visual ============ */
+  .style-visual {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .style-visual .chunk {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 1.7rem;
+    padding: 14px 22px;
+    letter-spacing: -0.01em;
+  }
+  .style-visual::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--_bg, #222);
+    z-index: 0;
+    opacity: 0.92;
+  }
+  .style-visual .chunk { position: relative; z-index: 1; color: var(--_fg, #fff); }
+
+  /* ============ LP Pattern wireframe ============ */
+  .wire {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    height: 100%;
+    background: var(--bg-soft);
+  }
+  .wire .block {
+    border-radius: 2px;
+    background: var(--surface-hi);
+    border: 1px solid var(--line-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 4px 6px;
+    text-align: center;
+    font-weight: 400;
+  }
+  .wire .block.hero { min-height: 36px; background: transparent; color: var(--accent); border-color: var(--accent-soft); font-weight: 500; }
+  .wire .block.cta { background: var(--accent-soft); color: #1d1a14; border-color: var(--accent-soft); font-weight: 500; opacity: 0.85; }
+  .wire .block.row { min-height: 18px; }
+
+  /* ============ Product visual ============ */
+  .product-visual {
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    background: linear-gradient(170deg, #f6f4ee 0%, #ece6dc 100%);
+    position: relative;
+  }
+  .product-visual::after {
+    content: "";
+    position: absolute;
+    top: 18px; right: 20px;
+    width: 22px; height: 1px;
+    background: var(--accent-soft);
+    opacity: 0.6;
+  }
+  .product-visual .ptype {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 1.35rem;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    color: var(--text);
+  }
+  .product-visual .pkw {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.64rem;
+    color: var(--dim);
+    letter-spacing: 0.05em;
+    line-height: 1.55;
+    max-height: 3em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    font-weight: 400;
+  }
+
+  /* ============ Modal ============ */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(68,56,50,0.26);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 48px 20px;
+    overflow-y: auto;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    border-radius: 6px;
+    max-width: 860px;
+    width: 100%;
+    padding: 34px 36px 36px;
+    position: relative;
+    box-shadow: 0 26px 72px rgba(68,56,50,0.10);
+  }
+  .modal h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 2rem;
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .modal .subtitle {
+    color: var(--muted);
+    font-size: 0.86rem;
+    margin-bottom: 26px;
+    font-style: italic;
+  }
+  .modal .close {
+    position: absolute;
+    top: 18px; right: 18px;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 220ms, border-color 220ms;
+  }
+  .modal .close:hover { border-color: var(--accent-soft); color: var(--accent); }
+  .modal dl {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 12px 22px;
+    margin: 0;
+  }
+  .modal dt {
+    color: var(--dim);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding-top: 3px;
+    font-weight: 400;
+  }
+  .modal dd {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.65;
+    white-space: pre-wrap;
+  }
+  .modal dd.mono { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--muted); }
+
+  /* ============ Empty state ============ */
+  .empty {
+    padding: 100px 0;
+    text-align: center;
+    color: var(--dim);
+    font-size: 0.95rem;
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  @media (max-width: 720px) {
+    .header-inner { flex-wrap: wrap; padding: 14px 18px; }
+    .tabs { order: 3; width: 100%; }
+    .search-wrap { padding: 14px 18px; }
+    .search input { min-width: 0; width: 100%; }
+    .search { width: 100%; }
+    main { padding: 16px 18px 80px; }
+    .modal dl { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0.01ms !important; }
+    .card:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-inner">
+    <div>
+      <a href="../index.html" style="text-decoration:none;color:inherit;">
+        <span class="brand">Low <span class="dot">&amp;</span> Hours</span>
+      </a>
+      <span class="brand-sub">Dictionary · visual reference</span>
+    </div>
+    <a href="../composer/index.html" style="margin-left:auto; margin-right:14px; color:var(--accent); text-decoration:none; font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; padding:8px 14px; border:1px solid var(--accent-soft); border-radius:var(--radius); font-weight:450; transition: border-color 220ms, color 220ms;">Composer →</a>
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="products">Products <span class="count" id="c-products">—</span></button>
+      <button class="tab" data-tab="styles">UI Styles <span class="count" id="c-styles">—</span></button>
+      <button class="tab" data-tab="colors">Colors <span class="count" id="c-colors">—</span></button>
+      <button class="tab" data-tab="landing">LP Patterns <span class="count" id="c-landing">—</span></button>
+      <button class="tab" data-tab="typography">Typography <span class="count" id="c-typography">—</span></button>
+    </nav>
+  </div>
+  <div class="search-wrap">
+    <h1 id="section-title">Product Types</h1>
+    <span class="section-desc" id="section-desc">161 product verticals — each mapped to recommended style, LP pattern, and color focus.</span>
+    <div class="search">
+      <input id="search" type="text" placeholder="filter by keyword…" autocomplete="off" />
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none;">No matches. Try a different keyword.</div>
+</main>
+
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal" id="modal">
+    <button class="close" id="modal-close" aria-label="Close">×</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script src="./data.js"></script>
+<script>
+  const DATA = window.UIPRO_DATA;
+  const SECTIONS = {
+    products:  { title: "Product Types",   desc: "Product verticals — each mapped to recommended style, LP pattern, and color focus." },
+    styles:    { title: "UI Styles",       desc: "Visual movements & eras — from Minimalism to Brutalism, Glassmorphism, Aurora UI, etc." },
+    colors:    { title: "Color Palettes",  desc: "Per-vertical palette (Primary / Secondary / CTA / Background / Text / Border)." },
+    landing:   { title: "Landing Patterns",desc: "Section-order formulas for landing pages (Hero, Features, CTA, Testimonials…)." },
+    typography:{ title: "Typography Pairings", desc: "Heading + Body font pairings with mood keywords." },
+  };
+
+  let currentTab = "products";
+  let loadedFonts = new Set();
+
+  // ---------- Utilities ----------
+  const $ = (sel) => document.querySelector(sel);
+  const $$ = (sel) => [...document.querySelectorAll(sel)];
+  const escapeHtml = (s) => (s ?? "").toString()
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+  function hexesFrom(str) {
+    if (!str) return [];
+    const out = [];
+    const re = /#([0-9a-f]{3}|[0-9a-f]{6})\b/gi;
+    let m;
+    while ((m = re.exec(str))) out.push("#" + m[1]);
+    // dedupe, keep order
+    return [...new Set(out)].slice(0, 8);
+  }
+
+  function contrastText(hex) {
+    if (!hex) return "#fff";
+    const h = hex.replace("#","");
+    const full = h.length === 3 ? h.split("").map(c=>c+c).join("") : h;
+    const r = parseInt(full.slice(0,2),16);
+    const g = parseInt(full.slice(2,4),16);
+    const b = parseInt(full.slice(4,6),16);
+    const L = (0.299*r + 0.587*g + 0.114*b)/255;
+    return L > 0.6 ? "#111" : "#fff";
+  }
+
+  function ensureFont(url) {
+    if (!url) return;
+    if (loadedFonts.has(url)) return;
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = url;
+    document.head.appendChild(link);
+    loadedFonts.add(url);
+  }
+
+  // convert Google Fonts share URL to css2 import URL
+  function gfShareToCss(url) {
+    if (!url) return null;
+    // "https://fonts.google.com/share?selection.family=Inter:wght@300;400;500|Playfair+Display:wght@400;500"
+    try {
+      const u = new URL(url);
+      const fam = u.searchParams.get("selection.family");
+      if (!fam) return null;
+      // split fonts by '|'
+      const fonts = fam.split("|");
+      const params = fonts.map(f => "family=" + encodeURIComponent(f).replace(/%20/g,"+").replace(/%2C/g,",").replace(/%3A/g,":").replace(/%3B/g,";").replace(/%40/g,"@"));
+      return "https://fonts.googleapis.com/css2?" + params.join("&") + "&display=swap";
+    } catch {
+      return null;
+    }
+  }
+
+  // ---------- Renderers per section ----------
+  const renderers = {
+    products: (row, idx) => {
+      const style = row["Primary Style Recommendation"] || "";
+      const lp    = row["Landing Page Pattern"] || "";
+      const color = row["Color Palette Focus"] || "";
+      return `
+        <div class="card-visual product-visual">
+          <div class="ptype">${escapeHtml(row["Product Type"])}</div>
+          <div class="pkw mono">${escapeHtml((row["Keywords"]||"").split(",").slice(0,8).join(" · "))}</div>
+        </div>
+        <div class="card-body">
+          <div class="card-idx">#${row["No"]}</div>
+          <div class="card-title">${escapeHtml(row["Product Type"])}</div>
+          <div class="card-sub">${escapeHtml(style)}</div>
+          <div class="chiprow">
+            ${lp ? `<span class="chip">${escapeHtml(lp)}</span>` : ""}
+            ${color ? `<span class="chip accent">${escapeHtml(color)}</span>` : ""}
+          </div>
+        </div>`;
+    },
+
+    styles: (row) => {
+      const primaryHexes = hexesFrom(row["Primary Colors"]);
+      const bg = primaryHexes[0] || "#222";
+      const fg = contrastText(bg);
+      const name = row["Style Category"] || "Untitled";
+      const era = row["Era/Origin"] || "";
+      return `
+        <div class="card-visual">
+          <div class="style-visual" style="--_bg:${bg}; --_fg:${fg};">
+            <div class="chunk">${escapeHtml(name.split(" ")[0])}</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-idx">#${row["No"]} · ${escapeHtml(era)}</div>
+          <div class="card-title">${escapeHtml(name)}</div>
+          <div class="card-sub">${escapeHtml((row["Keywords"]||"").split(",").slice(0,4).join(", "))}</div>
+          <div class="chiprow">
+            ${primaryHexes.slice(0,4).map(h=>`<span class="chip" style="background:${h}; color:${contrastText(h)}; border-color:${h};">${h}</span>`).join("")}
+          </div>
+        </div>`;
+    },
+
+    colors: (row) => {
+      const slots = [
+        ["Primary", row["Primary (Hex)"]],
+        ["Secondary", row["Secondary (Hex)"]],
+        ["CTA", row["CTA (Hex)"]],
+        ["Background", row["Background (Hex)"]],
+        ["Text", row["Text (Hex)"]],
+        ["Border", row["Border (Hex)"]],
+      ].filter(([,v]) => v && v.startsWith("#"));
+      return `
+        <div class="card-visual">
+          <div class="swatch-row">
+            ${slots.map(([,h]) => `<div class="swatch" style="background:${h}" data-hex="${h}"></div>`).join("")}
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-idx">#${row["No"]}</div>
+          <div class="card-title">${escapeHtml(row["Product Type"] || "—")}</div>
+          <div class="card-sub mono" style="font-size:.72rem;">${slots.map(([k,h])=>`${k} ${h}`).join(" · ")}</div>
+          ${row["Notes"] ? `<div class="card-sub" style="margin-top:4px;">${escapeHtml(row["Notes"])}</div>` : ""}
+        </div>`;
+    },
+
+    landing: (row) => {
+      const sections = (row["Section Order"] || "").split(/,\s*(?=\d\.)/);
+      return `
+        <div class="card-visual">
+          <div class="wire">
+            ${sections.map((s, i) => {
+              const txt = s.replace(/^\d+\.\s*/,"").slice(0, 32);
+              const cls = i === 0 ? "block hero" : (/cta/i.test(s) ? "block cta" : "block row");
+              return `<div class="${cls}">${escapeHtml(txt)}</div>`;
+            }).join("")}
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-idx">#${row["No"]}</div>
+          <div class="card-title">${escapeHtml(row["Pattern Name"])}</div>
+          <div class="card-sub">${escapeHtml((row["Primary CTA Placement"] || "").slice(0, 80))}</div>
+        </div>`;
+    },
+
+    typography: (row) => {
+      const heading = row["Heading Font"] || "Georgia";
+      const body    = row["Body Font"] || "Georgia";
+      const cssUrl  = gfShareToCss(row["Google Fonts URL"]);
+      if (cssUrl) ensureFont(cssUrl);
+      return `
+        <div class="card-visual">
+          <div class="type-visual">
+            <div>
+              <div class="type-heading" style="font-family:'${heading}', 'Georgia', serif;">Ag</div>
+              <div class="type-heading" style="font-family:'${heading}', 'Georgia', serif; font-size:1.1rem; font-weight:500; margin-top:4px;">${escapeHtml(row["Font Pairing Name"])}</div>
+            </div>
+            <div>
+              <div class="type-body" style="font-family:'${body}', 'Georgia', serif;">The quick brown fox jumps over the lazy dog.</div>
+              <div class="type-names">${escapeHtml(heading)} · ${escapeHtml(body)}</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-idx">#${row["No"]} · ${escapeHtml(row["Category"] || "")}</div>
+          <div class="card-title">${escapeHtml(row["Font Pairing Name"])}</div>
+          <div class="card-sub">${escapeHtml((row["Mood/Style Keywords"]||"").split(",").slice(0,4).join(", "))}</div>
+        </div>`;
+    },
+  };
+
+  // ---------- Modal (detail view) ----------
+  function openDetail(section, row) {
+    const title = row["Product Type"] || row["Style Category"] || row["Pattern Name"] || row["Font Pairing Name"] || "Detail";
+    const subtitle = {
+      products:   row["Primary Style Recommendation"] || "",
+      styles:     (row["Era/Origin"] || "") + " · " + (row["Type"] || ""),
+      colors:     row["Notes"] || row["Product Type"] || "",
+      landing:    row["Primary CTA Placement"] || "",
+      typography: (row["Category"] || "") + " · " + (row["Mood/Style Keywords"] || "").split(",").slice(0,3).join(", "),
+    }[section];
+
+    const keys = Object.keys(row).filter(k => k !== "No" && row[k] && row[k].toString().trim());
+    const dl = keys.map(k => {
+      const isMono = /hex|color|css|tailwind|import/i.test(k);
+      return `<dt>${escapeHtml(k)}</dt><dd class="${isMono ? "mono" : ""}">${escapeHtml(row[k])}</dd>`;
+    }).join("");
+
+    $("#modal-content").innerHTML = `
+      <h2>${escapeHtml(title)}</h2>
+      <div class="subtitle">${escapeHtml(subtitle)}</div>
+      <dl>${dl}</dl>
+    `;
+    $("#modal-backdrop").classList.add("open");
+  }
+
+  function closeModal() {
+    $("#modal-backdrop").classList.remove("open");
+  }
+
+  // ---------- Core render ----------
+  function normalize(s) { return (s ?? "").toString().toLowerCase(); }
+
+  function render() {
+    const q = normalize($("#search").value.trim());
+    const rows = DATA[currentTab] || [];
+    const filtered = q
+      ? rows.filter(r => Object.values(r).some(v => normalize(v).includes(q)))
+      : rows;
+
+    const fn = renderers[currentTab];
+    const grid = $("#grid");
+    grid.innerHTML = filtered.map((r, i) => `<article class="card" data-idx="${rows.indexOf(r)}">${fn(r, i)}</article>`).join("");
+
+    $("#empty").style.display = filtered.length ? "none" : "block";
+
+    // click → modal
+    $$(".card").forEach(el => el.addEventListener("click", () => {
+      const idx = parseInt(el.dataset.idx, 10);
+      openDetail(currentTab, rows[idx]);
+    }));
+  }
+
+  function setTab(name) {
+    currentTab = name;
+    $$(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === name));
+    $("#section-title").textContent = SECTIONS[name].title;
+    $("#section-desc").textContent = `${DATA[name].length} items — ${SECTIONS[name].desc}`;
+    $("#search").value = "";
+    render();
+  }
+
+  // ---------- Init ----------
+  Object.keys(DATA).forEach(k => {
+    const el = document.getElementById("c-" + k);
+    if (el) el.textContent = DATA[k].length;
+  });
+
+  $("#tabs").addEventListener("click", (e) => {
+    const btn = e.target.closest(".tab");
+    if (btn) setTab(btn.dataset.tab);
+  });
+  $("#search").addEventListener("input", render);
+  $("#modal-close").addEventListener("click", closeModal);
+  $("#modal-backdrop").addEventListener("click", (e) => {
+    if (e.target.id === "modal-backdrop") closeModal();
+  });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+  setTab("products");
+</script>
+</body>
+</html>

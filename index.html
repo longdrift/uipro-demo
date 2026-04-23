@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>uipro — index</title>
+<meta name="description" content="uipro — composer and dictionary.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #f6f4ee;
+  --cream-2: #ece6dc;
+  --ink: #362f29;
+  --ink-2: #6a615a;
+  --ink-3: #938877;
+  --line: #d8d0c3;
+  --line-2: #c4b9a8;
+  --espresso: #443832;
+  --accent: #946e54;
+  --amber: #c0ad90;
+  --serif: 'Fraunces', 'EB Garamond', Georgia, serif;
+  --sans: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --ease: cubic-bezier(.22,.64,.26,1);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image:
+    radial-gradient(1400px 700px at 10% -10%, #ede3d222, transparent 62%),
+    radial-gradient(1000px 500px at 105% 110%, #c0ad9018, transparent 60%);
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  z-index: 200;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+::selection { background: color-mix(in srgb, var(--amber) 70%, transparent); color: var(--espresso); }
+
+a { color: inherit; text-decoration: none; }
+
+.wrap {
+  max-width: 1080px;
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(28px, 5vw, 56px) clamp(22px, 4vw, 56px);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+header.top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: clamp(28px, 5vw, 48px);
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+header.top .brand {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+}
+header.top .brand .dot { color: var(--accent); font-style: normal; padding: 0 2px; }
+header.top .kicker {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+main.hero {
+  padding: clamp(56px, 11vw, 120px) 0 clamp(40px, 7vw, 72px);
+}
+main.hero h1 {
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 144;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(44px, 7.4vw, 104px);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  margin: 0 0 24px;
+  color: var(--espresso);
+  max-width: 16ch;
+}
+main.hero h1 em { color: var(--accent); font-style: italic; font-weight: 400; }
+main.hero p.lede {
+  max-width: 48ch;
+  font-size: 1rem;
+  color: var(--ink-2);
+  line-height: 1.75;
+  margin: 0;
+}
+
+.entries {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(16px, 2.4vw, 28px);
+  padding: clamp(16px, 3vw, 28px) 0 clamp(40px, 8vw, 72px);
+}
+.entry {
+  position: relative;
+  display: block;
+  padding: clamp(26px, 3.4vw, 44px);
+  background: color-mix(in srgb, var(--cream-2) 55%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  min-height: clamp(260px, 34vw, 360px);
+  overflow: hidden;
+  transition: background .5s var(--ease), border-color .5s var(--ease), transform .5s var(--ease);
+}
+.entry:hover {
+  background: color-mix(in srgb, var(--cream-2) 90%, transparent);
+  border-color: var(--line-2);
+}
+.entry .num {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.entry h2 {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(34px, 4.6vw, 58px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 18px 0 14px;
+  color: var(--espresso);
+}
+.entry p {
+  font-size: 0.94rem;
+  color: var(--ink-2);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 34ch;
+}
+.entry .visit {
+  position: absolute;
+  left: clamp(26px, 3.4vw, 44px);
+  right: clamp(26px, 3.4vw, 44px);
+  bottom: clamp(22px, 3vw, 32px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.entry .visit .arr { transition: transform .5s var(--ease); }
+.entry:hover .visit .arr { transform: translateX(4px); }
+
+.entry .mark {
+  position: absolute;
+  right: clamp(20px, 3vw, 36px);
+  top: clamp(20px, 3vw, 28px);
+  width: clamp(48px, 6vw, 72px);
+  height: clamp(48px, 6vw, 72px);
+  opacity: 0.55;
+  color: var(--accent);
+}
+
+footer.foot {
+  border-top: 1px solid var(--line);
+  padding: 22px 0 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+footer.foot a:hover { color: var(--accent); }
+
+@media (max-width: 720px) {
+  .entries { grid-template-columns: 1fr; }
+  main.hero { padding: clamp(36px, 10vw, 64px) 0 clamp(24px, 6vw, 48px); }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">uipro <span class="dot">·</span> <em>quiet tools</em></div>
+    <div class="kicker">Index &nbsp;—&nbsp; two rooms</div>
+  </header>
+
+  <main class="hero">
+    <h1>Compose, <em>or</em> look around.</h1>
+    <p class="lede">A small pair of tools for sketching landing pages. Pick ingredients in the Composer, or browse the Dictionary to see what is on the shelf.</p>
+  </main>
+
+  <section class="entries">
+
+    <a class="entry" href="./composer/">
+      <svg class="mark" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+        <rect x="6" y="10" width="12" height="12" rx="1"/>
+        <rect x="22" y="10" width="20" height="12" rx="1"/>
+        <rect x="6" y="26" width="20" height="12" rx="1"/>
+        <rect x="30" y="26" width="12" height="12" rx="1"/>
+      </svg>
+      <div class="num">01 / Composer</div>
+      <h2>Composer</h2>
+      <p>Mix five slots — product, style, palette, pattern, typography — and get a calm preview back.</p>
+      <div class="visit">
+        <span>/composer</span>
+        <span class="arr">→</span>
+      </div>
+    </a>
+
+    <a class="entry" href="./dictionary/">
+      <svg class="mark" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+        <path d="M8 8 h32 v32 h-32 z"/>
+        <path d="M8 16 h32"/>
+        <path d="M16 16 v24"/>
+      </svg>
+      <div class="num">02 / Dictionary</div>
+      <h2>Dictionary</h2>
+      <p>A flat shelf of products, UI styles, palettes, LP patterns, and typography — for when you just want to look.</p>
+      <div class="visit">
+        <span>/dictionary</span>
+        <span class="arr">→</span>
+      </div>
+    </a>
+
+  </section>
+
+  <footer class="foot">
+    <div>© 2026 uipro</div>
+    <div>
+      <a href="./composer/">Composer</a> &nbsp;·&nbsp;
+      <a href="./dictionary/">Dictionary</a>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
